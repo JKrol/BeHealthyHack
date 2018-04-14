@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import IndicoTest from '@/components/IndicoTest'
+import TextToSpeechTest from '@/components/TextToSpeechTest'
+import SpeechToTextTest from '@/components/SpeechToTextTest'
+
 Vue.use(Router)
 
 import store from '@/store'
-
-import HelloWorld from '@/components/HelloWorld'
 
 import Login from '@/pages/Login'
 import SelectFriends from '@/pages/SelectFriends'
@@ -33,7 +35,21 @@ const router = new Router({
       path: '/:id',
       name: 'main_selected',
       component: Main
-    }
+    },
+    {
+      path: '/IndicoTest',
+      name: 'IndicoTest',
+      component: IndicoTest
+    },
+    {
+      path: '/TextToSpeechTest',
+      name: 'TextToSpeechTest',
+      component: TextToSpeechTest
+    },
+    {
+      path: '/SpeechToTextTest',
+      name: 'SpeechToTextTest',
+      component: SpeechToTextTest    }
   ]
 });
 
