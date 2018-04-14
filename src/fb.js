@@ -15,22 +15,10 @@ export default {
             FB.getLoginStatus(function(response) {
                 console.log(response);
                 if (response.status === 'connected') {
-                    
-                    // console.log('Logged in.');
-
-                    // FB.api(
-                    //     `/1580773065373889`,
-                    //     function (response) {
-                    //         console.log(response)
-                    //         if (response && !response.error) {
-                                
-                    //         }
-                    //     }
-                    // );
-                    store.dispatch("setLoggedIn", true);
+                    store.dispatch("setLoggedIn", response.authResponse.userID);
                 }
                 else {
-                    store.dispatch("setLoggedIn", false);
+                    store.dispatch("setLoggedIn", null);
                 }
             });
         };

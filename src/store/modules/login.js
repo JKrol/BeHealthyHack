@@ -26,9 +26,7 @@ export default {
         }
     },
     actions: {
-        login({ commit }, data) {
-
-            console.log("Login")
+        login({ commit, dispatch }, data) {
 
             commit(LOGIN);
 
@@ -37,9 +35,14 @@ export default {
                 FB.login(function(response) {
                     console.log(response);
                     if(response.status == 'connected') {
-                        commit(LOGIN_SUCCESS);
-                        router.push({ name: 'main' });
-                        resolve(response);
+                        dispatch('setUserId', response.authResponse.userID).then(() => {
+                            commit(LOGIN_SUCCESS);
+                            router.push({ name: 'main' });
+                            resolve(response);
+                        }).catch(() => {
+                            commit(LOGIN_ERROR, "Unexpected error");
+                            reject();
+                        });
                     }
                     else {
                         commit(LOGIN_ERROR, response);
@@ -48,19 +51,26 @@ export default {
                 }, {scope: 'public_profile,user_friends,user_location,user_birthday,user_likes,user_photos,user_posts,user_tagged_places,user_videos,user_events,user_managed_groups'});
             });
         },
-        logout({ commit }) {
+        logout({ commit, dispatch }) {
             commit(LOGING_OUT);
 
             FB.logout(function(response) {
-                console.log(response)
-                commit(LOGOUT);
-                router.push({ name: 'login' });
+                dispatch('setUserId', 0).then(() => {
+                    commit(LOGOUT);
+                    router.push({ name: 'login' });
+                }).catch(() => {
+                    //TODO: handle error
+                });
             });
         },
-        setLoggedIn({ commit }, isLoggedIn) {
-            if(isLoggedIn) {
-                commit(LOGIN_SUCCESS);
-                router.push({ name: 'main' });
+        setLoggedIn({ commit, dispatch }, userId) {
+            if(userId) {
+                dispatch('setUserId', userId).then(() => {
+                    commit(LOGIN_SUCCESS);
+                    router.push({ name: 'main' });
+                }).catch(() => {
+                    //TODO: handle error
+                });
             }
             else {
                 commit(NOT_LOGGED_IN);

@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-toolbar app v-if="isLoggedIn">
-      <v-toolbar-title v-text="title"></v-toolbar-title>
+      <v-toolbar-title v-text="profile.name"></v-toolbar-title>
       <v-spacer></v-spacer>
       <a v-if="isLoggedIn" @click="logout()">Logout</a>
     </v-toolbar>
@@ -23,6 +23,9 @@ export default {
   computed: {
     isLoggedIn() {
       return this.$store.getters.isLoggedIn;
+    },
+    profile() {
+      return this.$store.getters.userInfo;
     }
   },
   methods: {
