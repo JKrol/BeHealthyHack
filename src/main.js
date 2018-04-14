@@ -6,6 +6,8 @@ import App from './App'
 import router from './router'
 import store from './store'
 
+import VueResources from 'vue-resource'
+
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 
@@ -22,6 +24,8 @@ Vue.use(Vuetify, { theme: {
   success: '#4CAF50',
   warning: '#FFC107'
 }})
+
+Vue.use(VueResources);
 
 Vue.config.productionTip = false
 

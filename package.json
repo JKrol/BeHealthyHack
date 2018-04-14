@@ -12,7 +12,9 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "base64-inline-loader": "^1.1.1",
     "vue": "^2.5.2",
+    "vue-resource": "^1.5.0",
     "vue-router": "^3.0.1",
     "vuetify": "^1.0.0",
     "vuex": "^3.0.1"
