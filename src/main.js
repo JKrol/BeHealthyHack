@@ -11,6 +11,10 @@ import VueResources from 'vue-resource'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 
+import fb from './fb'
+
+fb.init();
+
 Vue.use(Vuetify, { theme: {
   primary: '#ee44aa',
   secondary: '#424242',
