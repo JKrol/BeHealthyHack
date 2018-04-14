@@ -24,7 +24,7 @@ export default {
     loginError() {
       return this.$store.getters.loginError;
     }
-  },
+  }
 }
 </script>
 

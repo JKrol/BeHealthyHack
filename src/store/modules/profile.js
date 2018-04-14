@@ -8,7 +8,8 @@ export default {
         userInfo: {
             name: '',
             picture: null
-        }
+        },
+        friends: []
     },
     getters: {
         userId: state => {
@@ -16,6 +17,9 @@ export default {
         },
         userInfo: state => {
             return state.userInfo;
+        },
+        userFriends: state => {
+            return state.friends;
         }
     },
     actions: {
@@ -26,7 +30,7 @@ export default {
                 if(userId != 0) {
                     FB.api(
                         `/me`,
-                        { fields: 'id, name, birthday, gender, picture' },
+                        { fields: 'id, name, birthday, gender, picture, friends' },
                         function (response) {
                             console.log(response);
                             if (response && !response.error) {
@@ -55,10 +59,12 @@ export default {
             if(data == null) {
                 state.userInfo.name = '';
                 state.userInfo.picture = null;
+                state.friends = [];
             }
             else {
                 state.userInfo.name = data.name;
                 state.userInfo.picture = data.picture.data.url;
+                state.friends = data.friends.data;
             }
         }
     }
