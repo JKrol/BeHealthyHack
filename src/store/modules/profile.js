@@ -1,12 +1,13 @@
 
 const SET_ID = "SET_ID";
-const SET_NAME = "SET_NAME";
+const SET_PROFILE = "SET_PROFILE";
 
 export default {
     state: {
         userId: 0,
         userInfo: {
-            name: ''
+            name: '',
+            picture: null
         }
     },
     getters: {
@@ -21,13 +22,15 @@ export default {
         setUserId({ commit }, userId) {
             return new Promise((resolve, reject) => {
                 commit(SET_ID, userId);
-
+                
                 if(userId != 0) {
                     FB.api(
-                        `/${userId}`,
+                        `/me`,
+                        { fields: 'id, name, birthday, gender, picture' },
                         function (response) {
+                            console.log(response);
                             if (response && !response.error) {
-                                commit(SET_NAME, response.name);
+                                commit(SET_PROFILE, response);
                                 resolve();
                             }
                             else {
@@ -37,7 +40,7 @@ export default {
                     );
                 }
                 else {
-                    commit(SET_NAME, '');
+                    commit(SET_PROFILE, null);
                     resolve();
                 }
 
@@ -48,8 +51,15 @@ export default {
         [SET_ID] (state, userId) {
             state.userId = userId;
         },
-        [SET_NAME] (state, name) {
-            state.userInfo.name = name;
+        [SET_PROFILE] (state, data) {
+            if(data == null) {
+                state.userInfo.name = '';
+                state.userInfo.picture = null;
+            }
+            else {
+                state.userInfo.name = data.name;
+                state.userInfo.picture = data.picture.data.url;
+            }
         }
     }
 };

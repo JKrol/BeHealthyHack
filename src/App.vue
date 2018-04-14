@@ -1,7 +1,8 @@
 <template>
   <v-app>
     <v-toolbar app v-if="isLoggedIn">
-      <v-toolbar-title v-text="profile.name"></v-toolbar-title>
+      <img :src="profile.picture" />
+      {{ profile.name }}
       <v-spacer></v-spacer>
       <a v-if="isLoggedIn" @click="logout()">Logout</a>
     </v-toolbar>
