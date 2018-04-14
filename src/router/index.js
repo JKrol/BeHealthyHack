@@ -28,6 +28,11 @@ const router = new Router({
       path: '/',
       name: 'main',
       component: Main
+    },
+    {
+      path: '/:id',
+      name: 'main_selected',
+      component: Main
     }
   ]
 });
