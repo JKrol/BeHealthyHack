@@ -33,6 +33,10 @@ const router = new Router({
       component: Main
     },
     {
+      path: '/:id',
+      name: 'main_selected',
+      component: Main},
+    {
       path: '/IndicoTest',
       name: 'IndicoTest',
       component: IndicoTest
@@ -45,8 +49,7 @@ const router = new Router({
     {
       path: '/SpeechToTextTest',
       name: 'SpeechToTextTest',
-      component: SpeechToTextTest
-    }
+      component: SpeechToTextTest    }
   ]
 });
 

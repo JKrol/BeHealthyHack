@@ -26,7 +26,13 @@ export default {
   },
   methods: {
     save() {
-      console.log("save");
+      var result = [];
+      for(var i=0; i<this.friends.length; i++) {
+        if(this.friends[i].selected)
+          result.push(this.friends[i].id);
+      }
+      
+      this.$store.dispatch('setSelectedFriends', result);
     },
     anySelected() {
       for(var i=0; i<this.friends.length; i++) {

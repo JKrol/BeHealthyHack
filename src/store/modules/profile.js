@@ -1,6 +1,11 @@
+import Vue from 'vue'
+import router from '@/router'
+
+const LS_SELECTED_FRIENDS = "SELECTED_FRIENDS";
 
 const SET_ID = "SET_ID";
 const SET_PROFILE = "SET_PROFILE";
+const SET_SELECTED_FRIENDS = "SET_SELECTED_FRIENDS";
 
 export default {
     state: {
@@ -10,7 +15,7 @@ export default {
             picture: null
         },
         friends: [],
-        selectedFriendsIds: []
+        selectedFriendsIds: localStorage.getItem(LS_SELECTED_FRIENDS) ? JSON.parse(localStorage.getItem(LS_SELECTED_FRIENDS)) : []
     },
     getters: {
         userId: state => {
@@ -23,7 +28,7 @@ export default {
             return state.friends;
         },
         userSelectedFriends: state => {
-            return state.friends;
+            return state.friends ? state.friends.filter(friend => state.selectedFriendsIds.includes(friend.id)) : state.friends;
         },
         isSelected: state => {
             return state.selectedFriendsIds.length > 0;
@@ -79,6 +84,10 @@ export default {
                 }
 
             });
+        },
+        setSelectedFriends({ commit }, friends) {
+            commit(SET_SELECTED_FRIENDS, friends);
+            router.push({ name: 'main' });
         }
     },
     mutations: {
@@ -90,12 +99,18 @@ export default {
                 state.userInfo.name = '';
                 state.userInfo.picture = null;
                 state.friends = [];
+                state.selectedFriendsIds = [];
+                localStorage.removeItem(LS_SELECTED_FRIENDS);
             }
             else {
                 state.userInfo.name = data.name;
                 state.userInfo.picture = data.picture.data.url;
                 state.friends = data.friends.data;
             }
-        }
+        },
+        [SET_SELECTED_FRIENDS] (state, friends) {
+            localStorage.setItem(LS_SELECTED_FRIENDS, JSON.stringify(friends));
+            state.selectedFriendsIds = friends;
+        },
     }
 };
