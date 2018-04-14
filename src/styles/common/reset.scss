@@ -1,0 +1,130 @@
+/**
+ * A very simple reset that sits on top of Normalize.css.
+ */
+
+ body {
+  box-sizing: border-box;
+
+  * {
+    box-sizing: inherit;
+  }
+}
+
+main {
+  display: block;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+blockquote,
+p,
+pre,
+dl,
+dd,
+ol,
+ul,
+figure,
+hr,
+fieldset,
+legend {
+  margin: 0;
+  padding: 0;
+}
+
+
+abbr[title] {
+  border-bottom: none;
+  cursor: inherit;
+  text-decoration: none;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+
+button {
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  outline: none;
+}
+
+
+/**
+* Remove trailing margins from nested lists.
+*/
+
+li >  {
+  ol,
+  ul {
+    margin-bottom: 0;
+  }
+}
+
+input {
+  min-width: 0;
+}
+
+input,
+select,
+textarea {
+  appearance: none;
+  outline: none;
+}
+
+label {
+  margin: 0;
+}
+
+form {
+  margin: 0;
+}
+
+input {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+}
+
+textarea {
+  border: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+/**
+* Remove default table spacing.
+*/
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+fieldset {
+  border: none;
+}
+
+
+img {
+  @include font-body;
+
+  border: 0;
+  font-style: italic;
+  line-height: 1;
+  max-height: 100%;
+  max-width: 100%;
+  text-transform: none;
+}
