@@ -12,6 +12,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "base64-inline-loader": "^1.1.1",
     "vue": "^2.5.2",
     "vue-resource": "^1.5.0",
