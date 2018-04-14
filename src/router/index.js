@@ -8,6 +8,7 @@ import store from '@/store'
 import HelloWorld from '@/components/HelloWorld'
 
 import Login from '@/pages/Login'
+import SelectFriends from '@/pages/SelectFriends'
 import Main from '@/pages/Main'
 
 const router = new Router({
@@ -17,6 +18,11 @@ const router = new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/select',
+      name: 'select_friends',
+      component: SelectFriends
     },
     {
       path: '/',
@@ -29,6 +35,9 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   if(to.name != 'login' && !store.getters.isLoggedIn) {
     next({ name: 'login' })
+  }
+  else if(to.name != 'select_friends' && store.getters.isLoggedIn && !store.getters.isSelected) {
+    next({ name: 'select_friends' })
   }
   else {
     next();

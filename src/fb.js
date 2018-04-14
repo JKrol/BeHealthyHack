@@ -13,7 +13,7 @@ export default {
             });
         
             FB.getLoginStatus(function(response) {
-                console.log(response);
+                // console.log(response);
                 if (response.status === 'connected') {
                     store.dispatch("setLoggedIn", response.authResponse.userID);
                 }

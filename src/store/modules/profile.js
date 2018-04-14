@@ -9,7 +9,8 @@ export default {
             name: '',
             picture: null
         },
-        friends: []
+        friends: [],
+        selectedFriendsIds: []
     },
     getters: {
         userId: state => {
@@ -18,8 +19,14 @@ export default {
         userInfo: state => {
             return state.userInfo;
         },
-        userFriends: state => {
+        userAllFriends: state => {
             return state.friends;
+        },
+        userSelectedFriends: state => {
+            return state.friends;
+        },
+        isSelected: state => {
+            return state.selectedFriendsIds.length > 0;
         }
     },
     actions: {
@@ -32,10 +39,33 @@ export default {
                         `/me`,
                         { fields: 'id, name, birthday, gender, picture, friends' },
                         function (response) {
-                            console.log(response);
                             if (response && !response.error) {
-                                commit(SET_PROFILE, response);
-                                resolve();
+                                //TODO: refactor
+                                let fPromises = [];
+                                response.friends.data.forEach(friend => {
+                                    fPromises.push(new Promise(resolve => {
+                                        FB.api(
+                                            `/${friend.id}`,
+                                            { fields: 'picture' },
+                                            function (response) {
+                                                if (response && !response.error) {
+                                                    friend.picture = response.picture.data.url;
+                                                }
+                                                resolve();
+                                            }
+                                        );
+                                    }));
+                                });
+
+                                Promise.all(fPromises)
+                                    .then((results) => {
+                                        commit(SET_PROFILE, response);
+                                        resolve();
+                                    })
+                                    .catch((e) => {
+                                        reject();
+                                    });
+                                
                             }
                             else {
                                 reject();
