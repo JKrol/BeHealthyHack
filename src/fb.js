@@ -1,3 +1,5 @@
+import store from '@/store'
+
 export default {
     init: () => {
         
@@ -13,23 +15,22 @@ export default {
             FB.getLoginStatus(function(response) {
                 console.log(response);
                 if (response.status === 'connected') {
-                    console.log('Logged in.');
+                    
+                    // console.log('Logged in.');
 
-                    FB.api(
-                        `/me/friends`,
-                        function (response) {
-                            console.log(response)
-                            if (response && !response.error) {
+                    // FB.api(
+                    //     `/1580773065373889`,
+                    //     function (response) {
+                    //         console.log(response)
+                    //         if (response && !response.error) {
                                 
-                            }
-                        }
-                    );
+                    //         }
+                    //     }
+                    // );
+                    store.dispatch("setLoggedIn", true);
                 }
                 else {
-                    console.log('FB.login');
-                    FB.login(function(response) {
-                        console.log(response);
-                      }, {scope: 'public_profile,user_friends,user_location,user_birthday,user_likes,user_photos,user_posts,user_tagged_places,user_videos,user_events,user_managed_groups'});
+                    store.dispatch("setLoggedIn", false);
                 }
             });
         };
@@ -43,6 +44,4 @@ export default {
         }(document, 'script', 'facebook-jssdk'));
     }
 }
-
-
    
