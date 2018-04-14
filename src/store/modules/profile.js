@@ -28,7 +28,7 @@ export default {
             return state.friends;
         },
         userSelectedFriends: state => {
-            return state.friends;
+            return state.friends ? state.friends.filter(friend => state.selectedFriendsIds.includes(friend.id)) : state.friends;
         },
         isSelected: state => {
             return state.selectedFriendsIds.length > 0;
