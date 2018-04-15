@@ -57,7 +57,10 @@ export default {
       console.log('No live audio input: ' + e);
     });
 
-    this.respond("Hey, Whats up, want to write your daily diary now?");
+    if(this.language === 'en-US')
+      this.respond("Hey, Whats up, want to write your daily diary now?");
+    else
+      this.respond("Cześć, co tam, chcesz może napisać teraz pamiętnik?");
     
   },
 
@@ -149,32 +152,79 @@ export default {
         });
     },
     onAction(text) {
-      switch(this.step) {
-        case 0:
-          this.respond('Hey, Whats up, want to write your daily diary now?');
-          this.step = 1;
-        break;
-        case 1:
-          if(text.includes('yes')) {
-            this.respond('So, how do you feel after your day?');
-            this.step = 2;
-          } else {
-             this.respond('Ok!');
-            this.step = 0;
-          }
-        break;
-        case 2:
-          this.respond('What was your biggest accomplishment today?');
-          this.step = 3;
-        break;
-        case 3:
-          this.respond('What was the most challenging task for you?');
-          this.step = 4;
-        break;
-        case 4:
-          this.respond(`Would you say, you had a good day, ${this.$store.getters.userInfo.name.split(' ')[0]}?`);
-          this.step = 5;
-        break;
+      if(this.language === 'en-US') {
+        switch(this.step) {
+          case 0:
+            this.respond('Hey, Whats up, want to write your daily diary now?');
+            this.step = 1;
+          break;
+          case 1:
+            if(text.toLowerCase().includes('yes')) {
+              this.respond('So, how do you feel after your day?');
+              this.step = 2;
+            } else {
+              this.respond('Ok!');
+              this.step = 0;
+            }
+          break;
+          case 2:
+            this.respond('What was your biggest accomplishment today?');
+            this.step = 3;
+          break;
+          case 3:
+            this.respond('What was the most challenging task for you?');
+            this.step = 4;
+          break;
+          case 4:
+            this.respond(`Would you say, you had a good day, ${this.$store.getters.userInfo.name.split(' ')[0]}?`);
+            this.step = 5;
+          break;
+          case 5:
+            if(text.toLowerCase().includes('yes')) {
+              this.respond('That is awesome! See you tomorrow!');
+            } else {
+              this.respond('What a pity! See you tomorrow!');
+            }     
+          break;
+        }
+      }
+      else 
+      {
+          switch(this.step) {
+          case 0:
+            this.respond('Cześć, co tam, chcesz może napisać teraz pamiętnik?');
+            this.step = 1;
+          break;
+          case 1:
+            if(text.toLowerCase().includes('tak')) {
+              this.respond('Więc jak się czujesz po całym dniu?');
+              this.step = 2;
+            } else {
+              this.respond('Ok!');
+              this.step = 0;
+            }
+          break;
+          case 2:
+            this.respond('Jakie było Twoje największe dzisiejsze osiągnięcie?');
+            this.step = 3;
+          break;
+          case 3:
+            this.respond('Co było najbardziej wymagającym zadaniem dla Ciebie?');
+            this.step = 4;
+          break;
+          case 4:
+            this.respond(`Czy możesz powiedzieć, że miałeś dobry dzień ${this.$store.getters.userInfo.name.split(' ')[0]}?`);
+            this.step = 5;
+          break;
+          case 5:
+            if(text.toLowerCase().includes('tak')) {
+              this.respond('To super! Na dzisiaj to wszystko, dobrego dnia!');
+            } else {
+              this.respond('Szkoda, ale nie załamuj się! Na dzisiaj to wszystko, dobrego dnia!');
+            }            
+            this.step = 6;
+          break;
+        }
       }
     },
     respond (text) {
