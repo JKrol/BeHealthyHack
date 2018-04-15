@@ -175,6 +175,10 @@ export default {
           this.respond(`Would you say, you had a good day, ${this.$store.getters.userInfo.name.split(' ')[0]}?`);
           this.step = 5;
         break;
+        case 5:
+          this.respond('Ok thanks, bye!');
+          this.step = 6;
+        break;
       }
     },
     respond (text) {
