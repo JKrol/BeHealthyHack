@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import IndicoTest from '@/components/IndicoTest'
+import AnalyzeEntities from '@/components/AnalyzeEntities'
 import TextToSpeechTest from '@/components/TextToSpeechTest'
 import SpeechToTextTest from '@/components/SpeechToTextTest'
 import TextToSpeechTestPl from '@/components/TextToSpeechTestPl'
@@ -42,6 +43,11 @@ const router = new Router({
       path: '/IndicoTest',
       name: 'IndicoTest',
       component: IndicoTest
+    },
+    {
+      path: '/AnalyzeEntities',
+      name: 'AnalyzeEntities',
+      component: AnalyzeEntities
     },
     {
       path: '/TextToSpeechTest',
