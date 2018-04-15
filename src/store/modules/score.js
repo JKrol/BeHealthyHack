@@ -8,17 +8,17 @@ const SET_MSG_SCORE = "SET_MSG_SCORE";
 const SET_IMG_SCORE = "SET_IMG_SCORE";
 
 const mapScore = score => {
-    if(!score)
+    if (!score)
         return null;
 
-    if(score < 0.33 || (score.Sad && score.Sad > score.Happy && score.Sad > score.Neutral))
+    if (score < 0.33 || (score.Sad && score.Sad > score.Happy && score.Sad > score.Neutral))
         return {
             name: 'BAD',
-            color: 'red',
+            color: '#D0021B',
             icon: ''
         };
-    
-    if(score < 0.66 || (score.Neutral && score.Neutral > score.Happy && score.Neutral > score.Sad))
+
+    if (score < 0.66 || (score.Neutral && score.Neutral > score.Happy && score.Neutral > score.Sad))
         return {
             name: 'NEUTRAL',
             color: 'black',
@@ -27,7 +27,7 @@ const mapScore = score => {
 
     return {
         name: 'GOOD',
-        color: 'green',
+        color: '#7ED321',
         icon: ''
     };
 }
@@ -46,15 +46,15 @@ export default {
     actions: {
         getFeedScore({ commit, dispatch, state, rootState }, userId) {
             return new Promise((resolve, reject) => {
-                if(state.usersFeedScore[userId]) {
+                if (state.usersFeedScore[userId]) {
                     resolve(mapScore(state.usersFeedScore[userId]));
                     return;
-                } 
+                }
 
                 var data = rootState.feed.usersFeed[userId].filter(feed => feed.message).map(feed => feed.message);
 
                 indico.getSentimentFromList(data).then(result => {
-                    const sum = result.reduce(function(a, b) { return a + b; });
+                    const sum = result.reduce(function (a, b) { return a + b; });
                     const avg = sum / result.length;
                     commit(SET_USER_FEED_SCORE, { userId, feed: avg });
                     resolve(mapScore(avg));
@@ -63,10 +63,10 @@ export default {
         },
         getMessageScore({ commit, dispatch, state, rootState }, msg) {
             return new Promise((resolve, reject) => {
-                if(state.messageScore[msg.id]) {
+                if (state.messageScore[msg.id]) {
                     resolve(mapScore(state.messageScore[msg.id]));
                     return;
-                } 
+                }
                 indico.getSentimentFromText(msg.message).then(result => {
                     commit(SET_MSG_SCORE, { id: msg.id, score: result });
                     resolve(mapScore(result));
@@ -75,10 +75,10 @@ export default {
         },
         getPhotoScore({ commit, dispatch, state, rootState }, photo) {
             return new Promise((resolve, reject) => {
-                if(state.imageScore[photo.id]) {
+                if (state.imageScore[photo.id]) {
                     resolve(mapScore(state.imageScore[photo.id]));
                     return;
-                } 
+                }
                 indico.getSentimentFromImg(photo.url).then(result => {
                     commit(SET_IMG_SCORE, { id: photo.id, score: result });
                     resolve(mapScore(result));
@@ -87,13 +87,13 @@ export default {
         },
     },
     mutations: {
-        [SET_USER_FEED_SCORE] (state, data) {
+        [SET_USER_FEED_SCORE](state, data) {
             state.usersFeedScore[data.userId] = data.score;
         },
-        [SET_MSG_SCORE] (state, data) {
+        [SET_MSG_SCORE](state, data) {
             state.messageScore[data.id] = data.score;
         },
-        [SET_IMG_SCORE] (state, data) {
+        [SET_IMG_SCORE](state, data) {
             state.imageScore[data.id] = data.score;
         },
     }
