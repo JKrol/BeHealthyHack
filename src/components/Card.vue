@@ -21,6 +21,7 @@ export default {
   padding: 12px;
   width: 100%;
   margin-bottom: 16px;
+  position: relative;
 
   .image {
     width: 100%;
