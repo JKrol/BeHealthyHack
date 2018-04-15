@@ -113,7 +113,7 @@ export default {
 
                 that.processing = false;
             }).catch(error => {
-              this.processing = false;
+              that.processing = false;
               console.log("ERROR:" + error);
             })
         }

@@ -20,14 +20,19 @@ export default {
             commit(SET_BOT_HISTORY, state.history);
         },
         updateHistory({ state, commit }, data) {
-            commit(SET_BOT_HISTORY, history);
+            commit(SET_BOT_HISTORY, data);
         }
     },
     mutations: {
         [SET_BOT_HISTORY](state, data) {
-            state.history = data;
-            const history = JSON.stringify(data);
-            localStorage.setItem(LS_BOT_LOG, history);
+            state.history = data ? data : [];
+            if(data && data.length > 0) {
+                const history = JSON.stringify(data);
+                localStorage.setItem(LS_BOT_LOG, history);
+            }
+            else {
+                localStorage.removeItem(LS_BOT_LOG);
+            }
         }
     }
 };
