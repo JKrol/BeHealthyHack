@@ -10,16 +10,20 @@
     <br/>
     <div v-if="selectedFriend">
       <friend-card :friend="selectedFriend" />
+      <br/>
+      <br/>
+      <friend-timeline :friend="selectedFriend" />
     </div>
   </div>
 </template>
 
 <script>
 import FriendCard from '@/components/FriendCard'
+import FriendTimeline from '@/components/FriendTimeline'
 
 export default {
   components: {
-    FriendCard
+    FriendCard, FriendTimeline
   },
   methods: {
     selectFriend(friendId) {
