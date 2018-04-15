@@ -123,14 +123,29 @@ export default {
     
                                 promises.push(new Promise(resolve => {
                                     dispatch('fetchPhoto', element.id).then(photo => {
-                                        element.url = photo.images[0].source;
+                                        element.url = photo.images[5].source;
                                         resolve();
                                     });
                                 }));
                             });
     
                             Promise.all(promises).then(() => {
-                                resolve(timeline);
+                                const imgPromises = [];
+                                timeline.forEach(element => {
+                                    if(element.type != "IMG")
+                                        return;
+
+                                    imgPromises.push(new Promise(resolve => {
+                                        dispatch('getPhotoScore', element).then(score => {
+                                            element.score = score;
+                                            resolve();
+                                        });
+                                    }));
+
+                                    Promise.all(imgPromises).then(() => {
+                                        resolve(timeline);
+                                    });
+                                });
                             });
                         });
                     });

@@ -11,14 +11,14 @@ const mapScore = score => {
     if(!score)
         return null;
 
-    if(score < 0.33)
+    if(score < 0.33 || (score.Sad && score.Sad > score.Happy && score.Sad > score.Neutral))
         return {
             name: 'BAD',
             color: 'red',
             icon: ''
         };
     
-    if(score < 0.66)
+    if(score < 0.66 || (score.Neutral && score.Neutral > score.Happy && score.Neutral > score.Sad))
         return {
             name: 'NEUTRAL',
             color: 'black',
@@ -68,6 +68,17 @@ export default {
                     return;
                 } 
                 indico.getSentimentFromText(msg.message).then(result => {
+                    resolve(mapScore(result));
+                }).catch(err => reject(err));
+            });
+        },
+        getPhotoScore({ commit, dispatch, state, rootState }, photo) {
+            return new Promise((resolve, reject) => {
+                if(state.imageScore[photo.id]) {
+                    resolve(mapScore(state.imageScore[photo.id]));
+                    return;
+                } 
+                indico.getSentimentFromImg(photo.url).then(result => {
                     resolve(mapScore(result));
                 }).catch(err => reject(err));
             });
