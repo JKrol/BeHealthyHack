@@ -54,6 +54,8 @@ export default {
       recorder: null,
       recording: false,
       processing: false,
+      // language: 'en-US',
+      language: 'pl-PL',
       data: {
         "audio": {
           "content": null
@@ -94,7 +96,7 @@ export default {
           const baseData = reader.result;
           const base64Data = baseData.replace("data:audio/wav;base64,", "");
           that.data.audio.content = base64Data;
-          that.data.config.languageCode = 'en-US';
+          that.data.config.languageCode = that.language;
           that.$http.post(`https://speech.googleapis.com/v1/speech:recognize?key=AIzaSyAU9oQBX3J1B0t4OLL5yLTGr4k6_FLbjTU`,
               that.data).then(response => {
 
@@ -118,15 +120,24 @@ export default {
       });
     },
     respond (text) {
-      textToSpeech.getAudioContent(text).then(data => {
+      if(this.language == 'pl-PL') {
+        responsiveVoice.speak(text, 'Polish Female'); 
+        this.saveBotResponse(text);
+      }
+      else {
+        textToSpeech.getAudioContent(text).then(data => {
           var snd = new Audio("data:audio/wav;base64," + data);
           snd.play();
 
-          this.$store.dispatch("addToHistory", {
-            type: "BOT",
-            text: text
-          });
-      }).catch(err => {console.log(err);});
+         this.saveBotResponse(text);
+        }).catch(err => {console.log(err);});
+      }
+    },
+    saveBotResponse(text) {
+       this.$store.dispatch("addToHistory", {
+          type: "BOT",
+          text: text
+        });
     }
   },
 
