@@ -1,11 +1,7 @@
 <template>
   <div>
     Select Friends:
-    <v-text-field
-      label="Search"
-      v-model="search"
-    ></v-text-field>
-    <br/>
+    <v-text-field label="Search" v-model="search" />
     <ul>
       <li v-for="friend in friends" :key="friend.id">
         <img :src="friend.picture" />
@@ -19,40 +15,46 @@
 
 <script>
 export default {
-  data: () => {
+  data() {
     return {
-      search: ''
-    }
+      search: ""
+    };
   },
   methods: {
     save() {
-      var result = [];
-      for(var i=0; i<this.friends.length; i++) {
-        if(this.friends[i].selected)
-          result.push(this.friends[i].id);
+      const results = [];
+
+      for (let i = 0; i < this.friends.length; i++) {
+        if (this.friends[i].selected) {
+          results.push(this.friends[i].id);
+        }
       }
-      
-      this.$store.dispatch('setSelectedFriends', result);
+
+      this.$store.dispatch("setSelectedFriends", results);
     },
+
     anySelected() {
-      for(var i=0; i<this.friends.length; i++) {
-        if(this.friends[i].selected)
-          return true;
+      for (let i = 0; i < this.friends.length; i++) {
+        if (this.friends[i].selected) return true;
       }
 
       return false;
     }
   },
+
   computed: {
     friends() {
       var data = this.$store.getters.userAllFriends;
-      if(this.search == null || this.search.length == 0 || !data)
+      if (this.search == null || this.search.length == 0 || !data) {
         return data;
+      }
 
-      return data.filter(friend => friend.name.toLowerCase().includes(this.search.toLowerCase()));
+      return data.filter(friend =>
+        friend.name.toLowerCase().includes(this.search.toLowerCase())
+      );
     }
   }
-}
+};
 </script>
 
 <style scoped>
