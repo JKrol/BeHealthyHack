@@ -9,13 +9,22 @@
     <br/>
     <br/>
     <div v-if="selectedFriend">
-      {{ selectedFriend.name }}
+      <friend-card :friend="selectedFriend" />
+      <br/>
+      <br/>
+      <friend-timeline :friend="selectedFriend" />
     </div>
   </div>
 </template>
 
 <script>
+import FriendCard from '@/components/FriendCard'
+import FriendTimeline from '@/components/FriendTimeline'
+
 export default {
+  components: {
+    FriendCard, FriendTimeline
+  },
   methods: {
     selectFriend(friendId) {
       this.$router.push({ name: 'main_selected', params: { id: friendId }})
