@@ -17,9 +17,6 @@ export default {
   computed: {
     isLoggedIn() {
       return this.$store.getters.isLoggedIn;
-    },
-    profile() {
-      return this.$store.getters.userInfo;
     }
   },
 
