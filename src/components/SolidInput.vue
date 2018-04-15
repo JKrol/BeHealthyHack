@@ -1,11 +1,21 @@
 <template>
-  <input class="solid-input" type="text" :placeholder="placeholder" :name="name" :v-model="model" />
+  <input class="solid-input" type="text" :placeholder="placeholder" :name="name" v-model="model" />
 </template>
 
 <script>
 export default {
   name: "solid-input",
-  props: ["placeholder", "name", "model"]
+  props: ["placeholder", "name"],
+  data() {
+    return {
+      model: ''
+    }
+  },
+  watch: {
+    model: function(newVal) {
+      this.$emit('interface', newVal)
+    }
+  }
 };
 </script>
 

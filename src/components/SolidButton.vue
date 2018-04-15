@@ -1,6 +1,6 @@
 <template>
-  <button :class="['solid-button', theme]" @click='onClick()' v-bind='{onClick}'>
-    {{text}}
+  <button :class="['solid-button', theme]" @click='onClick()' >
+    {{ text }}
   </button>
 </template>
 

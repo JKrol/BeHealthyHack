@@ -8,7 +8,17 @@
 <script>
 export default {
   name: "solid-checkbox",
-  props: ["name", "model"]
+  props: ["name", "id"],
+  data() {
+    return {
+      model: false
+    }
+  },
+  watch: {
+    model: function(newVal) {
+      this.$emit('interface', { id: this.id, s: newVal })
+    }
+  }
 };
 </script>
 

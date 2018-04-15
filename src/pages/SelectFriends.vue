@@ -2,11 +2,10 @@
   <section class="select-friends view">
     <assistant-bubble :message="message" />
     <div class="friends-list-wrapper">
-      <friends-list :friends="friends" />
+      <friends-list :friends="friends" @interface="handleChildSelect" />
     </div>
-    <solid-input name="search" placeholder="Search friends" :model="search" />
+    <solid-input name="search" placeholder="Search friends" @interface="handleChildStateChange" />
     <div class="buttons">
-      <solid-button theme="ghost" text="Skip" :onClick="save" />
       <solid-button text="Next" :onClick="save" />
     </div>
   </section>
@@ -29,7 +28,8 @@ export default {
   data() {
     return {
       search: "",
-      message: "Hey! Select few friend you woudl like to improve your relation"
+      message: "Hey! Select few friend you woudl like to improve your relation",
+      selected: {}
     };
   },
 
@@ -38,7 +38,7 @@ export default {
       const results = [];
 
       for (let i = 0; i < this.friends.length; i++) {
-        if (this.friends[i].selected) {
+        if (this.selected[this.friends[i].id]) {
           results.push(this.friends[i].id);
         }
       }
@@ -52,6 +52,15 @@ export default {
       }
 
       return false;
+    },
+
+    handleChildStateChange (val) {
+      this.search = val;
+    },
+
+    handleChildSelect (val) {
+      // console.log(val)
+      this.selected[val.id] = val.s;
     }
   },
 

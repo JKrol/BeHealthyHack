@@ -3,7 +3,7 @@
     <label class="friend" v-for="friend in friends" :key="friend.id">
         <img class="image" :src="friend.picture" />
         <div class="name">{{ friend.name }}</div>
-        <solid-checkbox name="friend" :model="friend.selected" />
+        <solid-checkbox name="friend" :id="friend.id" @interface="handleChildStateChange" />
     </label>
   </div>
 </template>
@@ -17,9 +17,20 @@ import pulse from "../assets/pulse.svg";
 export default {
   name: "friends-list",
   props: ["friends"],
+  data() {
+    return {
+      
+    }
+  },
   components: {
     SolidCheckbox
-  }
+  },
+  methods: {
+    handleChildStateChange (val) {
+      // this.selected[val.id] = val.s;
+      this.$emit('interface', val )
+    }
+  },
 };
 </script>
 
