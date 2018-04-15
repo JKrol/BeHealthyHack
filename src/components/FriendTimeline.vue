@@ -6,6 +6,9 @@
       <li v-for="item in timeline" :key="item.id">
         <img v-if="item.type=='IMG'" :src="item.url" style="max-width: 150px;"/>
         <span v-if="item.type=='MSG'">{{ item.message }}</span>
+        <br/>
+        Mental Health Score: <span v-if="item.score" :style="{color: item.score.color}">{{ item.score.name }}</span>
+        <br/><br/>
       </li>
     </ul>
   </div>
