@@ -4,7 +4,7 @@
       <div class="logo" v-html="logo" />
     </template>
     <template v-else>
-      <assistant-bubble message="Welcome to the magic health! Login with facebook to start using the app!" />
+      <assistant-bubble message="Welcome to MagicHealth! Login with facebook to start using the app!" />
       <solid-button :onClick="login" text="Login with facebook"/>
     </template>
   </section>

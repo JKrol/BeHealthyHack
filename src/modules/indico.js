@@ -7,7 +7,7 @@ export default {
 
     getSentimentFromImg: (img) => {
 
-        return new Promise((resolve, err) => {
+        return new Promise((resolve, reject) => {
 
             Vue.http.post(
                 'https://cors-anywhere.herokuapp.com/https://apiv2.indico.io/fer',
@@ -19,10 +19,14 @@ export default {
               ).then(function(res, err) { 
                 if(err)
                     { 
-                        err(err);
+                        reject(err);
                         return;  
                     }
-                resolve(res.body.results[0].emotions);
+
+                    if(res.body.results[0])
+                        resolve(res.body.results[0].emotions);
+                    else
+                        reject();
               });
         })
     },

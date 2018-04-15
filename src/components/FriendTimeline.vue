@@ -2,7 +2,7 @@
   <div>
     <card>
       <icon-placeholder :svg="confettiIcon" />
-      <p>{{friend.name}} has birthsday today! Call him and wish all the best!</p>
+      <p>Its {{friend.name.split(' ')[0]}}'s birthday today! Wish {{friend.name.split(' ')[0]}} all the best!</p>
     </card>
     <div v-if="data">
       <div v-if="timeline && timeline.length > 0">
