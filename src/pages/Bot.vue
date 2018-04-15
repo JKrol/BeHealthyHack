@@ -17,6 +17,8 @@
 
 <script>
 
+import textToSpeech from "@/modules/textToSpeech"
+
 export default {
   created() {
     try {
@@ -100,9 +102,11 @@ export default {
 
                 if (result && result.transcript && result.transcript.length > 0) {
                   that.$store.dispatch("addToHistory", {
-                    type: "USER",
+                    type: "USER", 
                     text: result.transcript
                   });
+
+                  that.respond(result.transcript);
                 }
 
                 that.processing = false;
@@ -112,6 +116,17 @@ export default {
             })
         }
       });
+    },
+    respond (text) {
+      textToSpeech.getAudioContent(text).then(data => {
+          var snd = new Audio("data:audio/wav;base64," + data);
+          snd.play();
+
+          this.$store.dispatch("addToHistory", {
+            type: "BOT",
+            text: text
+          });
+      }).catch(err => {console.log(err);});
     }
   },
 
