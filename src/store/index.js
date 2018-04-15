@@ -5,10 +5,12 @@ Vue.use(Vuex);
 
 import login from './modules/login'
 import profile from './modules/profile'
+import feed from './modules/feed'
 
 export default new Vuex.Store({
     modules: {
         login,
-        profile
+        profile,
+        feed
     }
 })
