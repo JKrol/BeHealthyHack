@@ -1,10 +1,5 @@
 <template>
   <v-app>
-    <v-toolbar app v-if="isLoggedIn">
-      <img :src="profile.picture" />
-      {{ profile.name }}
-      <a v-if="isLoggedIn" @click="logout()">Logout</a>
-    </v-toolbar>
     <router-view />
   </v-app>
 </template>
@@ -20,16 +15,16 @@ export default {
   },
 
   computed: {
-    isLoggedIn () {
+    isLoggedIn() {
       return this.$store.getters.isLoggedIn;
     },
-    profile () {
+    profile() {
       return this.$store.getters.userInfo;
     }
   },
 
   methods: {
-    logout () {
+    logout() {
       this.$store.dispatch("logout");
     }
   },
