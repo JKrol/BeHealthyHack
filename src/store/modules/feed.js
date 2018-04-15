@@ -81,7 +81,7 @@ export default {
                 );
             });
         },
-        getTimeline({ commit, dispatch, state }, userId) {
+        getMessagesWithScore({ commit, dispatch, state }, userId) {
             return new Promise(resolve => {
                 dispatch('fetchUserFeed', userId).then(feed => {
                     feed = feed.filter(item => item.message)
@@ -103,53 +103,67 @@ export default {
                         }));
                     });
 
-                    Promise.all(msgPromises).then(() => {
-                        dispatch('fetchUserPhotos', userId).then(photos => {
-                            photos = photos.map(item => {
-                                item.type = "IMG";
-                                return item;
-                            });
-    
-                            var timeline = feed.concat(photos);
-    
-                            timeline.sort(function(a, b) {
-                                return new Date(b.created_time) - new Date(a.created_time);;
-                            });
-    
-                            const promises = [];
-                            timeline.forEach(element => {
-                                if(element.type != "IMG")
-                                    return;
-    
-                                promises.push(new Promise(resolve => {
-                                    dispatch('fetchPhoto', element.id).then(photo => {
-                                        photo.images.sort((a, b) => b.width - a.width);
-                                        var img = photo.images.find(img => img.width < 600);
-                                        element.url = img ? img.source : photo.images[0].source;
-                                        resolve();
-                                    });
-                                }));
-                            });
-    
-                            Promise.all(promises).then(() => {
-                                const imgPromises = [];
-                                timeline.forEach(element => {
-                                    if(element.type != "IMG")
-                                        return;
+                    Promise.all(msgPromises).then(() => resolve(feed));
+                });
+            });
+        },
+        fillPhotosUrlAndScore({ commit, dispatch, state }, timeline) {
+            return new Promise(resolve => {
+                const promises = [];
+                timeline.forEach(element => {
+                    if(element.type != "IMG")
+                        return;
 
-                                    imgPromises.push(new Promise(resolve => {
-                                        dispatch('getPhotoScore', element).then(score => {
-                                            element.score = score;
-                                            resolve();
-                                        });
-                                    }));
-
-                                    Promise.all(imgPromises).then(() => {
-                                        resolve(timeline);
-                                    });
-                                });
-                            });
+                    promises.push(new Promise(resolve => {
+                        dispatch('fetchPhoto', element.id).then(photo => {
+                            photo.images.sort((a, b) => b.width - a.width);
+                            var img = photo.images.find(img => img.width < 600);
+                            element.url = img ? img.source : photo.images[0].source;
+                            resolve();
                         });
+                    }));
+                });
+
+                Promise.all(promises).then(() => {
+                    const imgPromises = [];
+                    timeline.forEach(element => {
+                        if(element.type != "IMG")
+                            return;
+
+                        imgPromises.push(new Promise(resolve => {
+                            dispatch('getPhotoScore', element).then(score => {
+                                element.score = score;
+                                resolve();
+                            });
+                        }));
+
+                        Promise.all(imgPromises).then(() => {
+                            resolve(timeline);
+                        });
+                    });
+                });
+            });
+        },
+        getTimeline({ commit, dispatch, state }, userId) {
+            return new Promise(resolve => {
+                dispatch('getMessagesWithScore', userId).then(feed => {
+                    dispatch('fetchUserPhotos', userId).then(photos => {
+                        photos = photos.map(item => {
+                            item.type = "IMG";
+                            return item;
+                        });
+
+                        var timeline = feed.concat(photos);
+
+                        timeline.sort(function(a, b) {
+                            return new Date(b.created_time) - new Date(a.created_time);;
+                        });
+
+                        dispatch('fillPhotosUrlAndScore', timeline)
+                            .then(timeline => { 
+                                const result = timeline.filter(item => item.score && (item.score.name == "BAD" || item.score.name == "GOOD"));
+                                resolve(result)
+                            });
                     });
                     
                 });
