@@ -55,8 +55,10 @@ export default {
 
             FB.logout(function (response) {
                 dispatch('setUserId', 0).then(() => {
-                    commit(LOGOUT);
-                    router.push({ name: 'login' });
+                    dispatch('updateHistory', null).then(() => {
+                        commit(LOGOUT);
+                        router.push({ name: 'login' });
+                    });
                 }).catch(() => {
                     //TODO: handle error
                 });

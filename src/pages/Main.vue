@@ -1,12 +1,11 @@
 <template>
   <section class="main view">
-    <friend-chooser :friends="friends" :onClick="selectFriend" />
-
+    <friend-chooser :friends="friends" :onClick="selectFriend" />ster
     <div v-if="selectedFriend">
       <friend-card :friend="selectedFriend" />
       <friend-timeline :friend="selectedFriend" />
     </div>
-    <bottom-menu />
+    <bottom-menu :onNav3Click="goToBot" />
   </section>
 </template>
 
@@ -26,6 +25,9 @@ export default {
   methods: {
     selectFriend(friendId) {
       this.$router.push({ name: "main_selected", params: { id: friendId } });
+    },
+    goToBot() {
+      this.$router.push({ name: "bot" });
     }
   },
   data() {

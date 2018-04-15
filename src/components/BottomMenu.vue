@@ -2,8 +2,7 @@
   <nav class="bottom-menu">
     <div v-html="nav1" />
     <div v-html="nav2" />
-    <div v-html="nav3" />
-    <div v-html="nav4" />
+    <div v-html="nav3" @click="onNav3Click()" />
   </nav>
 </template>
 
@@ -11,17 +10,15 @@
 import nav1 from "../assets/nav_people_icon.svg";
 import nav2 from "../assets/nav_profile_icon.svg";
 import nav3 from "../assets/nav_chat_icon.svg";
-import nav4 from "../assets/nav_callendar_icon.svg";
 
 export default {
   name: "bottom-menu",
-  props: ["links"],
+  props: ["onNav3Click"],
   data() {
     return {
       nav1,
       nav2,
-      nav3,
-      nav4
+      nav3
     };
   }
 };
