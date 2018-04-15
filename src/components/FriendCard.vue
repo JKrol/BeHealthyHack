@@ -51,6 +51,7 @@ export default {
   methods: {},
   watch: {
     friend: function(newVal) {
+      this.score = null;
       this.$store.dispatch("fetchUserFeed", this.friend.id).then(feed => {
         this.feed = feed;
       });

@@ -1,0 +1,9 @@
+{
+    "name": "MagicHealth",
+    "short_name": "MagicHealth",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#29487d",
+    "theme_color": "#29487d",
+    "description": "MagicHealth"
+}
