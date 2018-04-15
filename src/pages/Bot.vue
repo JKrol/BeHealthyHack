@@ -15,8 +15,10 @@
       </div>
     </div>
 
-    <v-btn @click="startRecording()" :disabled="recording || processing">Start</v-btn>
-    <v-btn @click="stopRecording()" :disabled="!recording || processing">Stop</v-btn>
+    <div class="buttons">
+      <v-btn @click="startRecording()" :disabled="recording || processing">Start</v-btn>
+      <v-btn @click="stopRecording()" :disabled="!recording || processing">Stop</v-btn>
+    </div>
   </section>
 </template>
 
@@ -25,10 +27,12 @@
 import textToSpeech from "@/modules/textToSpeech";
 
 import MessageBubble from "../components/MessageBubble";
+import SolidButton from "../components/SolidButton";
 
 export default {
   components: {
-    MessageBubble
+    MessageBubble,
+    SolidButton
   },
   created() {
     try {
@@ -49,19 +53,22 @@ export default {
     }
 
     const that = this;
-    navigator.getUserMedia({
-      audio: true
-    }, function(stream) {
-      that.startUserMedia(stream)
-    }, function(e) {
-      console.log('No live audio input: ' + e);
-    });
+    navigator.getUserMedia(
+      {
+        audio: true
+      },
+      function(stream) {
+        that.startUserMedia(stream);
+      },
+      function(e) {
+        console.log("No live audio input: " + e);
+      }
+    );
 
     if(this.language === 'en-US')
       this.respond("Hey, Whats up, want to write your daily diary now?");
     else
-      this.respond("Cześć, co tam, chcesz może napisać teraz pamiętnik?");
-    
+      this.respond("Czesc, co tam, chcesz moze napisac teraz pamietnik?");
   },
 
   destroyed() {
@@ -75,7 +82,7 @@ export default {
       recorder: null,
       recording: false,
       processing: false,
-      language: 'en-US',
+      language: "en-US",
       // language: 'pl-PL',
       data: {
         audio: {
@@ -192,12 +199,12 @@ export default {
       {
           switch(this.step) {
           case 0:
-            this.respond('Cześć, co tam, chcesz może napisać teraz pamiętnik?');
+            this.respond('Czesc, co tam, chcesz moze napisac teraz pamietnik?');
             this.step = 1;
           break;
           case 1:
             if(text.toLowerCase().includes('tak')) {
-              this.respond('Więc jak się czujesz po całym dniu?');
+              this.respond('Wiec jak sie czujesz po calym dniu?');
               this.step = 2;
             } else {
               this.respond('Ok!');
@@ -205,31 +212,31 @@ export default {
             }
           break;
           case 2:
-            this.respond('Jakie było Twoje największe dzisiejsze osiągnięcie?');
+            this.respond('Jakie bylo Twoje najwieksze dzisiejsze osiagniecie?');
             this.step = 3;
           break;
           case 3:
-            this.respond('Co było najbardziej wymagającym zadaniem dla Ciebie?');
+            this.respond('Co bylo najbardziej wymagajacym zadaniem dla Ciebie?');
             this.step = 4;
           break;
           case 4:
-            this.respond(`Czy możesz powiedzieć, że miałeś dobry dzień ${this.$store.getters.userInfo.name.split(' ')[0]}?`);
+            this.respond(`Czy mozesz powiedziec, ze miales dobry dzien ${this.$store.getters.userInfo.name.split(' ')[0]}?`);
             this.step = 5;
           break;
           case 5:
             if(text.toLowerCase().includes('tak')) {
               this.respond('To super! Na dzisiaj to wszystko, dobrego dnia!');
             } else {
-              this.respond('Szkoda, ale nie załamuj się! Na dzisiaj to wszystko, dobrego dnia!');
+              this.respond('Szkoda, ale nie zalamuj sie! Na dzisiaj to wszystko, dobrego dnia!');
             }            
             this.step = 6;
           break;
         }
       }
     },
-    respond (text) {
-      if(this.language == 'pl-PL') {
-        responsiveVoice.speak(text, 'Polish Female'); 
+    respond(text) {
+      if (this.language == "pl-PL") {
+        responsiveVoice.speak(text, "Polish Female");
         this.saveBotResponse(text);
       } else {
         textToSpeech
@@ -263,5 +270,20 @@ export default {
 
 
 <style lang="scss" scoped>
+.bot {
+  padding-top: 34px;
 
+  .message-bubble {
+    margin-bottom: 16px;
+  }
+
+  .buttons {
+    width: 100%;
+    display: flex;
+    position: fixed;
+    bottom: 32px;
+    left: 0;
+    padding: 0 14px;
+  }
+}
 </style>
