@@ -1,14 +1,14 @@
 <template>
-  <div class='solid-button' @click='onClick()' v-bind='{onClick}'>
+  <button :class="['solid-button', theme]" @click='onClick()' v-bind='{onClick}'>
     {{text}}
-  </div>
+  </button>
 </template>
 
 <script>
 export default {
-  name: 'solid-button',
-  props: ['onClick', 'text']
-}
+  name: "solid-button",
+  props: ["onClick", "text", "disabled", "theme"]
+};
 </script>
 
 <style lang="scss" scoped>
@@ -25,6 +25,15 @@ export default {
   font-weight: 500;
   overflow: hidden;
 
+  &.ghost {
+    background: transparent;
+    box-shadow: none;
+
+    &:after {
+      display: none;
+    }
+  }
+
   &:after {
     pointer-events: none;
     content: "";
@@ -33,7 +42,7 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba($color-white, .1);
+    background-color: rgba($color-white, 0.1);
   }
 }
 </style>

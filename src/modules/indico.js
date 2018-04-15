@@ -1,10 +1,14 @@
 import Vue from 'vue'
-export default {
+import * as firebase from 'firebase'
+import * as ff from 'firebase/functions'
 
+export default {
+    indicoRequest: null,
 
     getSentimentFromImg: (img) => {
 
         return new Promise((resolve, err) => {
+
             Vue.http.post(
                 'https://cors-anywhere.herokuapp.com/https://apiv2.indico.io/fer',
                 JSON.stringify({
@@ -45,6 +49,13 @@ export default {
     },
 
     getSentimentFromList: (txt) => {
+        // if(!this.indicoRequest)
+        //     this.indicoRequest = firebase.functions().httpsCallable('indicoRequest');
+
+        // this.indicoRequest({ url: 'sentiment/batch', data: txt }).then(function(result) {
+            
+        //     console.log("RRR", result);
+        // }).catch(e => console.log("EEE", e));
 
         return new Promise((resolve, err) => {
             Vue.http.post(

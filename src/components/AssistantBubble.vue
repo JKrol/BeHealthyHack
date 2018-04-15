@@ -1,5 +1,5 @@
 <template>
-  <div :class='["assistant-bubble", message]'>
+  <div class="assistant-bubble">
     <div v-html="pulse" class="pulse" />
     <message-bubble :message='message' theme="t-white" direction='in' />
   </div>

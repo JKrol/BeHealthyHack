@@ -1,5 +1,5 @@
 <template>
-  <div class="view login">
+  <section class="view login">
     <template v-if="isLoginPending">
       <div class="logo" v-html="logo" />
     </template>
@@ -7,7 +7,7 @@
       <assistant-bubble message="Welcome to the magic health! Login with facebook to start using the app!" />
       <solid-button :onClick="login" text="Login with facebook"/>
     </template>
-  </div>
+  </section>
 </template>
 
 
