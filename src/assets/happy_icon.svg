@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <g fill="none" fill-rule="evenodd">
+    <path fill="#FFCA28" fill-rule="nonzero" d="M32,16 C32,24.8352 24.8352,32 16,32 C7.1648,32 0,24.8352 0,16 C0,7.1648 7.1648,0 16,0 C24.8352,0 32,7.1648 32,16 Z"/>
+    <path fill="#C62828" fill-rule="nonzero" d="M20,25.6 C20,23.3904 18.2096,21.6 16,21.6 C13.7904,21.6 12,23.3904 12,25.6 L20,25.6 Z" transform="matrix(1 0 0 -1 0 47.2)"/>
+    <path stroke="#B76C09" stroke-width="2" d="M7.2 16C7.2 16 8.4 14.4 10.4 14.4 12.4 14.4 13.6 16 13.6 16M18.4 16C18.4 16 19.6 14.4 21.6 14.4 23.6 14.4 24.8 16 24.8 16"/>
+  </g>
+</svg>
