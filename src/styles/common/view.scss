@@ -1,0 +1,9 @@
+.view {
+  @include vs-spacing(padding-bottom, 0, 100px);
+
+  flex: 1 0 auto;
+  min-height: 100%;
+  padding-top: $HEADER_HEIGHT_DESKTOP;
+  position: relative;
+  z-index: $z-idnex-over-base;
+}

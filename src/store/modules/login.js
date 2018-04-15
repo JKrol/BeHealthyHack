@@ -32,9 +32,8 @@ export default {
 
             return new Promise((resolve, reject) => {
 
-                FB.login(function(response) {
-                    console.log(response);
-                    if(response.status == 'connected') {
+                FB.login(function (response) {
+                    if (response.status == 'connected') {
                         dispatch('setUserId', response.authResponse.userID).then(() => {
                             commit(LOGIN_SUCCESS);
                             router.push({ name: 'main' });
@@ -48,13 +47,13 @@ export default {
                         commit(LOGIN_ERROR, response);
                         reject(response);
                     }
-                }, {scope: 'public_profile,user_friends,user_location,user_birthday,user_likes,user_photos,user_posts,user_tagged_places,user_videos,user_events,user_managed_groups'});
+                }, { scope: 'public_profile,user_friends,user_location,user_birthday,user_likes,user_photos,user_posts,user_tagged_places,user_videos,user_events,user_managed_groups' });
             });
         },
         logout({ commit, dispatch }) {
             commit(LOGING_OUT);
 
-            FB.logout(function(response) {
+            FB.logout(function (response) {
                 dispatch('setUserId', 0).then(() => {
                     commit(LOGOUT);
                     router.push({ name: 'login' });
@@ -64,7 +63,7 @@ export default {
             });
         },
         setLoggedIn({ commit, dispatch }, userId) {
-            if(userId) {
+            if (userId) {
                 dispatch('setUserId', userId).then(() => {
                     commit(LOGIN_SUCCESS);
                     router.push({ name: 'main' });
@@ -78,25 +77,25 @@ export default {
         }
     },
     mutations: {
-        [NOT_LOGGED_IN] (state) {
+        [NOT_LOGGED_IN](state) {
             state.loginPending = false;
             state.isLoggedIn = false;
             state.loginError = '';
         },
-        [LOGIN] (state) {
+        [LOGIN](state) {
             state.loginPending = true;
             state.loginError = '';
         },
-        [LOGIN_SUCCESS] (state) {
+        [LOGIN_SUCCESS](state) {
             state.isLoggedIn = true;
             state.loginPending = false;
             state.loginError = '';
         },
-        [LOGIN_ERROR] (state, error) {
+        [LOGIN_ERROR](state, error) {
             state.loginError = error;
             state.loginPending = false;
         },
-        [LOGING_OUT] (state) {
+        [LOGING_OUT](state) {
             state.loginPending = true;
             state.loginError = '';
         },

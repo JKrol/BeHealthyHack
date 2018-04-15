@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 80 80">
+  <defs>
+    <circle id="pulse-b" cx="40" cy="43" r="15"/>
+    <filter id="pulse-a" width="146.7%" height="146.7%" x="-23.3%" y="-16.7%" filterUnits="objectBoundingBox">
+      <feOffset dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2"/>
+      <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.770222151   0 0 0 0 0.770222151   0 0 0 0 0.770222151  0 0 0 0.5 0"/>
+    </filter>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <circle cx="40" cy="40" r="40" fill="#FFF" fill-opacity=".6"/>
+    <circle cx="40" cy="40" r="30" fill="#FFF" fill-opacity=".6"/>
+    <use fill="#000" filter="url(#pulse-a)" xlink:href="#pulse-b"/>
+    <use fill="#E8E8E8" xlink:href="#pulse-b"/>
+    <circle cx="40" cy="40" r="20" fill="#FFF"/>
+  </g>
+</svg>
