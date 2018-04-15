@@ -3,37 +3,55 @@
     <v-toolbar app v-if="isLoggedIn">
       <img :src="profile.picture" />
       {{ profile.name }}
-      <v-spacer></v-spacer>
       <a v-if="isLoggedIn" @click="logout()">Logout</a>
     </v-toolbar>
-    <v-content>
-      <router-view/>
-    </v-content>
+    <router-view />
   </v-app>
 </template>
 
 <script>
-import store from '@/store'
+import store from "@/store";
 
 export default {
-  data () {
+  data() {
     return {
-      title: 'Vuetify.js'
-    }
+      title: "Vuetify.js"
+    };
   },
+
   computed: {
-    isLoggedIn() {
+    isLoggedIn () {
       return this.$store.getters.isLoggedIn;
     },
-    profile() {
+    profile () {
       return this.$store.getters.userInfo;
     }
   },
+
   methods: {
-    logout() {
-      this.$store.dispatch('logout');
+    logout () {
+      this.$store.dispatch("logout");
     }
   },
-  name: 'App'
-}
+
+  name: "App"
+};
 </script>
+
+<style>
+html {
+  height: 100%;
+}
+
+[id="app"] {
+  min-height: 100%;
+}
+
+.view {
+  padding: 0 16px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-image: linear-gradient(-153deg, #4267b2 0%, #29487d 95%);
+}
+</style>

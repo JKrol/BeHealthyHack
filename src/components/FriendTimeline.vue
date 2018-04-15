@@ -3,8 +3,9 @@
     timeline
 
     <ul>
-      <li v-for="photo in photos" :key="photo.id">
-        <img :src="photo.url" />
+      <li v-for="item in timeline" :key="item.id">
+        <img v-if="item.type=='IMG'" :src="item.url" style="max-width: 150px;"/>
+        <span v-if="item.type=='MSG'">{{ item.message }}</span>
       </li>
     </ul>
   </div>
@@ -17,14 +18,14 @@ export default {
   name: "friend-timeline",
   props: ['friend'],
   created() {
-    this.$store.dispatch('fetchUserPhotos', this.friend.id).then(photos => {
-      this.photos = photos;
-    })
+    this.$store.dispatch('getTimeline', this.friend.id).then(timeline => {
+      this.timeline = timeline;
+    });
   },
   data() {
     return {
       data: this.friend,
-      photos: [],
+      timeline: [],
     }
   },
   methods: {
@@ -32,22 +33,12 @@ export default {
   },
   watch: {
     friend: function(newVal) {
-      this.$store.dispatch('fetchUserPhotos', this.friend.id).then(photos => {
-        this.photos = photos;
+      this.timeline = [];
+
+      this.$store.dispatch('getTimeline', this.friend.id).then(timeline => {
+        this.timeline = timeline;
       });
       this.data = newVal;
-    },
-    photos: function(newVal) {
-      if(!newVal)
-        return;
-
-      newVal.forEach(element => {
-        this.$store.dispatch('fetchPhoto', element.id).then(photo => {
-          element.url = photo.images[0].source;
-          this.$forceUpdate()
-          // console.log(element.id, photo);
-        });
-      });
     }
   }
 }

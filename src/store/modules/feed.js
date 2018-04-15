@@ -130,6 +130,47 @@ export default {
                 );
             });
         },
+        getTimeline({ commit, dispatch, state }, userId) {
+            return new Promise(resolve => {
+                dispatch('fetchUserFeed', userId).then(feed => {
+                    feed = feed.filter(item => item.message)
+                            .map(item => { 
+                                item.type = 'MSG'; 
+                                return item; 
+                            });
+                    
+                    dispatch('fetchUserPhotos', userId).then(photos => {
+                        photos = photos.map(item => {
+                            item.type = "IMG";
+                            return item;
+                        });
+
+                        var timeline = feed.concat(photos);
+
+                        timeline.sort(function(a, b) {
+                            return new Date(b.created_time) - new Date(a.created_time);;
+                        });
+
+                        const promises = [];
+                        timeline.forEach(element => {
+                            if(element.type != "IMG")
+                                return;
+
+                            promises.push(new Promise(resolve => {
+                                dispatch('fetchPhoto', element.id).then(photo => {
+                                    element.url = photo.images[0].source;
+                                    resolve();
+                                });
+                            }));
+                        });
+
+                        Promise.all(promises).then(() => {
+                            resolve(timeline);
+                        });
+                    });
+                });
+            }); 
+        }
     },
     mutations: {
         [SET_USER_FEED] (state, data) {
