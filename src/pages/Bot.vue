@@ -186,6 +186,10 @@ export default {
           );
           this.step = 5;
           break;
+        case 5:
+          this.respond("Ok thanks, bye!");
+          this.step = 6;
+          break;
       }
     },
     respond(text) {

@@ -1,7 +1,7 @@
 <template v-if="data">
   <div class="friend-card">
     <img :src="data.picture" />
-    <div class="mood-icon">
+    <div class="mood-icon" v-if="score">
       <div v-if="score.name === 'BAD'" v-html="sadIcon" />
       <div v-else-if="score.name === 'GOOD'" v-html="happyIcon" />
     </div>

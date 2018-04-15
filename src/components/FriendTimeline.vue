@@ -5,7 +5,7 @@
       <p>{{friend.name}} has birthsday today! Call him and wish all the best!</p>
     </card>
     <div v-if="data">
-      <div>
+      <div v-if="timeline && timeline.length > 0">
         <card v-for="item in timeline" :key="item.id">
           <div :class="[item.type == 'IMG' && 'floating']">
             <icon-placeholder v-if="item.score.name === 'BAD'" :svg="sadIcon" />
@@ -16,6 +16,9 @@
             <span v-if="item.type=='MSG'">{{ item.message }}</span>
           </div>
         </card>
+      </div>
+      <div v-else>
+        <v-progress-circular indeterminate color="primary" />
       </div>
     </div>
   </div>
