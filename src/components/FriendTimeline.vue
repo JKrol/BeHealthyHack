@@ -18,7 +18,11 @@
         </card>
       </div>
       <div v-else>
-        <v-progress-circular indeterminate color="primary" />
+        <div class="bouncing-loader">
+          <div class="bouncing-loader__round"></div>
+          <div class="bouncing-loader__round"></div>
+          <div class="bouncing-loader__round"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -68,12 +72,63 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../styles/config/index";
+
 .card {
   display: flex;
   position: relative;
 
   img {
     width: 100%;
+  }
+}
+
+body {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
+.bouncing-loader {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-top: 50px;
+
+  &__round {
+    width: 20px;
+    height: 20px;
+    background-color: $color-white;
+    border-radius: 50%;
+
+    &:not(:first-child) {
+      margin-left: 10px;
+    }
+
+    animation: bounce 0.6s infinite alternate;
+
+    &:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+  }
+}
+
+@keyframes bounce {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0.1;
+    transform: translateY(-20px);
   }
 }
 
