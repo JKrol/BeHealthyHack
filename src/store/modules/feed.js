@@ -1,51 +1,19 @@
 import Vue from 'vue'
 import router from '@/router'
 
-import indico from "@/modules/indico"
-
 const SET_USER_FEED = "SET_USER_FEED";
-const SET_USER_FEED_SCORE = "SET_USER_FEED_SCORE";
 const SET_USER_PHOTOS = "SET_USER_PHOTOS";
 const SET_PHOTO = "SET_PHOTO";
-
-const mapScore = score => {
-    if(!score)
-        return null;
-
-    if(score < 0.33)
-        return {
-            name: 'BAD',
-            color: 'red',
-            icon: ''
-        };
-    
-    if(score < 0.66)
-        return {
-            name: 'NEUTRAL',
-            color: 'black',
-            icon: ''
-        };
-
-    return {
-        name: 'GOOD',
-        color: 'green',
-        icon: ''
-    };
-}
 
 export default {
     state: {
         usersFeed: [],
-        usersFeedScore: [],
         usersPhotos: [],
         photos: [],
     },
     getters: {
         userFeed: state => id => {
             return state.usersFeed[id];
-        },
-        userFeedScore: state => id => {
-            return mapScore(state.usersFeedScore[id]);
         },
     },
     actions: {
@@ -68,23 +36,6 @@ export default {
                         }
                     }
                 );
-            });
-        },
-        getFeedScore({ commit, dispatch, state }, userId) {
-            return new Promise((resolve, reject) => {
-                if(state.usersFeedScore[userId]) {
-                    resolve(mapScore(state.usersFeedScore[userId]));
-                    return;
-                } 
-
-                var data = state.usersFeed[userId].filter(feed => feed.message).map(feed => feed.message);
-
-                indico.getSentimentFromText(data).then(result => {
-                    const sum = result.reduce(function(a, b) { return a + b; });
-                    const avg = sum / result.length;
-                    commit(SET_USER_FEED_SCORE, { userId, feed: avg });
-                    resolve(mapScore(avg));
-                }).catch(err => reject(err));
             });
         },
         fetchUserPhotos({ commit, dispatch, state }, userId) {
@@ -130,7 +81,7 @@ export default {
                 );
             });
         },
-        getTimeline({ commit, dispatch, state }, userId) {
+        getMessagesWithScore({ commit, dispatch, state }, userId) {
             return new Promise(resolve => {
                 dispatch('fetchUserFeed', userId).then(feed => {
                     feed = feed.filter(item => item.message)
@@ -138,7 +89,64 @@ export default {
                                 item.type = 'MSG'; 
                                 return item; 
                             });
-                    
+
+                    const msgPromises = [];
+                    feed.forEach(element => {
+                        if(element.type != "MSG")
+                            return;
+
+                        msgPromises.push(new Promise(resolve => {
+                            dispatch('getMessageScore', element).then(score => {
+                                element.score = score;
+                                resolve();
+                            });
+                        }));
+                    });
+
+                    Promise.all(msgPromises).then(() => resolve(feed));
+                });
+            });
+        },
+        fillPhotosUrlAndScore({ commit, dispatch, state }, timeline) {
+            return new Promise(resolve => {
+                const promises = [];
+                timeline.forEach(element => {
+                    if(element.type != "IMG")
+                        return;
+
+                    promises.push(new Promise(resolve => {
+                        dispatch('fetchPhoto', element.id).then(photo => {
+                            photo.images.sort((a, b) => b.width - a.width);
+                            var img = photo.images.find(img => img.width < 600);
+                            element.url = img ? img.source : photo.images[0].source;
+                            resolve();
+                        });
+                    }));
+                });
+
+                Promise.all(promises).then(() => {
+                    const imgPromises = [];
+                    timeline.forEach(element => {
+                        if(element.type != "IMG")
+                            return;
+
+                        imgPromises.push(new Promise(resolve => {
+                            dispatch('getPhotoScore', element).then(score => {
+                                element.score = score;
+                                resolve();
+                            });
+                        }));
+
+                        Promise.all(imgPromises).then(() => {
+                            resolve(timeline);
+                        });
+                    });
+                });
+            });
+        },
+        getTimeline({ commit, dispatch, state }, userId) {
+            return new Promise(resolve => {
+                dispatch('getMessagesWithScore', userId).then(feed => {
                     dispatch('fetchUserPhotos', userId).then(photos => {
                         photos = photos.map(item => {
                             item.type = "IMG";
@@ -151,23 +159,13 @@ export default {
                             return new Date(b.created_time) - new Date(a.created_time);;
                         });
 
-                        const promises = [];
-                        timeline.forEach(element => {
-                            if(element.type != "IMG")
-                                return;
-
-                            promises.push(new Promise(resolve => {
-                                dispatch('fetchPhoto', element.id).then(photo => {
-                                    element.url = photo.images[0].source;
-                                    resolve();
-                                });
-                            }));
-                        });
-
-                        Promise.all(promises).then(() => {
-                            resolve(timeline);
-                        });
+                        dispatch('fillPhotosUrlAndScore', timeline)
+                            .then(timeline => { 
+                                const result = timeline.filter(item => item.score && (item.score.name == "BAD" || item.score.name == "GOOD"));
+                                resolve(result)
+                            });
                     });
+                    
                 });
             }); 
         }
@@ -175,9 +173,6 @@ export default {
     mutations: {
         [SET_USER_FEED] (state, data) {
             state.usersFeed[data.userId] = data.feed;
-        },
-        [SET_USER_FEED_SCORE] (state, data) {
-            state.usersFeedScore[data.userId] = data.score;
         },
         [SET_USER_PHOTOS] (state, data) {
             state.usersPhotos[data.userId] = data.photos;
