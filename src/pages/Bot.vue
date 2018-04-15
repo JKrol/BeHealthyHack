@@ -42,6 +42,9 @@ export default {
     }, function(e) {
       console.log('No live audio input: ' + e);
     });
+
+    this.respond("Hey, Whats up, want to write your daily diary now?");
+    
   },
 
   destroyed() {
@@ -50,12 +53,13 @@ export default {
 
   data () {
     return {
+      step: 1,
       audioContext: null,
       recorder: null,
       recording: false,
       processing: false,
-      // language: 'en-US',
-      language: 'pl-PL',
+      language: 'en-US',
+      // language: 'pl-PL',
       data: {
         "audio": {
           "content": null
@@ -108,7 +112,7 @@ export default {
                     text: result.transcript
                   });
 
-                  that.respond(result.transcript);
+                  that.onAction(result.transcript);
                 }
 
                 that.processing = false;
@@ -118,6 +122,35 @@ export default {
             })
         }
       });
+    },
+    onAction(text) {
+      switch(this.step) {
+        case 0:
+          this.respond('Hey, Whats up, want to write your daily diary now?');
+          this.step = 1;
+        break;
+        case 1:
+          if(text.includes('yes')) {
+            this.respond('So, how do you feel after your day?');
+            this.step = 2;
+          } else {
+             this.respond('Ok!');
+            this.step = 0;
+          }
+        break;
+        case 2:
+          this.respond('What was your biggest accomplishment today?');
+          this.step = 3;
+        break;
+        case 3:
+          this.respond('What was the most challenging task for you?');
+          this.step = 4;
+        break;
+        case 4:
+          this.respond(`Would you say, you had a good day, ${this.$store.getters.userInfo.name.split(' ')[0]}?`);
+          this.step = 5;
+        break;
+      }
     },
     respond (text) {
       if(this.language == 'pl-PL') {
