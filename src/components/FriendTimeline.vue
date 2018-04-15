@@ -1,10 +1,18 @@
 <template>
   <div v-if="data">
     timeline
+
+    <ul>
+      <li v-for="photo in photos" :key="photo.id">
+        <img :src="photo.url" />
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
+
 export default {
   name: "friend-timeline",
   props: ['friend'],
@@ -33,11 +41,13 @@ export default {
       if(!newVal)
         return;
 
-      for(var i=0; i<newVal.length; i++) {
-        this.$store.dispatch('fetchPhoto', newVal[i].id).then(photo => {
-          console.log(photo);
+      newVal.forEach(element => {
+        this.$store.dispatch('fetchPhoto', element.id).then(photo => {
+          element.url = photo.images[0].source;
+          this.$forceUpdate()
+          // console.log(element.id, photo);
         });
-      }
+      });
     }
   }
 }
