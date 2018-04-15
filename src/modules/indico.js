@@ -27,7 +27,7 @@ export default {
 
         return new Promise((resolve, err) => {
             Vue.http.post(
-                'https://apiv2.indico.io/sentiment',
+                'https://apiv2.indico.io/sentiment/batch',
                 JSON.stringify({
                     'api_key': "b4585e0f9e78404b5cacc0f83a7ac953",
                     'data': txt,

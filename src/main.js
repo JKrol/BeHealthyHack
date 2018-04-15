@@ -13,8 +13,6 @@ import 'vuetify/dist/vuetify.min.css'
 
 import fb from './fb'
 
-fb.init();
-
 Vue.use(Vuetify, { theme: {
   primary: '#ee44aa',
   secondary: '#424242',
@@ -28,6 +26,8 @@ Vue.use(Vuetify, { theme: {
 Vue.use(VueResources);
 
 Vue.config.productionTip = false
+
+fb.init();
 
 /* eslint-disable no-new */
 new Vue({

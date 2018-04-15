@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
 import IndicoTest from '@/components/IndicoTest'
 import TextToSpeechTest from '@/components/TextToSpeechTest'
 import SpeechToTextTest from '@/components/SpeechToTextTest'
@@ -8,8 +9,6 @@ import TextToSpeechTestPl from '@/components/TextToSpeechTestPl'
 Vue.use(Router)
 
 import store from '@/store'
-
-import HelloWorld from '@/components/HelloWorld'
 
 import Login from '@/pages/Login'
 import SelectFriends from '@/pages/SelectFriends'
@@ -36,7 +35,8 @@ const router = new Router({
     {
       path: '/:id',
       name: 'main_selected',
-      component: Main},
+      component: Main
+    },
     {
       path: '/IndicoTest',
       name: 'IndicoTest',
