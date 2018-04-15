@@ -5,6 +5,7 @@ import IndicoTest from '@/components/IndicoTest'
 import TextToSpeechTest from '@/components/TextToSpeechTest'
 import SpeechToTextTest from '@/components/SpeechToTextTest'
 import TextToSpeechTestPl from '@/components/TextToSpeechTestPl'
+import SpeechToTextTestPl from '@/components/SpeechToTextTestPl'
 
 Vue.use(Router)
 
@@ -55,7 +56,13 @@ const router = new Router({
     {
       path: '/SpeechToTextTest',
       name: 'SpeechToTextTest',
-      component: SpeechToTextTest    }
+      component: SpeechToTextTest    
+    },
+    {
+      path: '/SpeechToTextTestPl',
+      name: 'SpeechToTextTestPl',
+      component: SpeechToTextTestPl    
+    }
   ]
 });
 

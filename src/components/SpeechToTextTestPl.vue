@@ -116,7 +116,7 @@ var audio_context;
             const base64Data = baseData.replace("data:audio/wav;base64,", "");
             vm.data.audio.content = base64Data;
             console.log(vm.data.config);
-            vm.data.config.languageCode = 'en-US';
+            vm.data.config.languageCode = 'pl-PL';
             axios.post(
               `https://speech.googleapis.com/v1/speech:recognize?key=AIzaSyAU9oQBX3J1B0t4OLL5yLTGr4k6_FLbjTU`,
               vm.data).then(response => {
@@ -134,7 +134,7 @@ var audio_context;
         });
       },
       redirectError() {
-        window.location.href = "https://localhost:8080/SpeechToTextTest"
+        window.location.href = "https://localhost:8080/SpeechToTextTestPl"
       }
     },
     created() {
