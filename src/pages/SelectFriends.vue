@@ -1,25 +1,38 @@
 <template>
-  <div>
-    Select Friends:
-    <v-text-field label="Search" v-model="search" />
-    <ul>
-      <li v-for="friend in friends" :key="friend.id">
-        <img :src="friend.picture" />
-        {{ friend.name }}
-        <v-checkbox v-model="friend.selected" />
-      </li>
-    </ul>
-    <v-btn @click="save()" :disabled="!anySelected()">Select</v-btn>
-  </div>
+  <section class="select-friends view">
+    <assistant-bubble :message="message" />
+    <div class="friends-list-wrapper">
+      <friends-list :friends="friends" />
+    </div>
+    <solid-input name="search" placeholder="Search friends" :model="search" />
+    <div class="buttons">
+      <solid-button theme="ghost" text="Skip" :onClick="save" />
+      <solid-button text="Next" :onClick="save" />
+    </div>
+  </section>
 </template>
 
 <script>
+import AssistantBubble from "../components/AssistantBubble";
+import FriendsList from "../components/FriendsList";
+import SolidButton from "../components/SolidButton";
+import SolidInput from "../components/SolidInput";
+
 export default {
+  components: {
+    SolidButton,
+    SolidInput,
+    AssistantBubble,
+    FriendsList
+  },
+
   data() {
     return {
-      search: ""
+      search: "",
+      message: "Hey! Select few friend you woudl like to improve your relation"
     };
   },
+
   methods: {
     save() {
       const results = [];
@@ -44,7 +57,8 @@ export default {
 
   computed: {
     friends() {
-      var data = this.$store.getters.userAllFriends;
+      const data = this.$store.getters.userAllFriends;
+
       if (this.search == null || this.search.length == 0 || !data) {
         return data;
       }
@@ -57,6 +71,30 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.select-friends {
+  padding-bottom: 28px;
+  padding-top: 34px;
+  margin-top: auto;
+  margin-bottom: auto;
 
+  .friends-list-wrapper {
+    margin-bottom: auto;
+    margin-top: auto;
+  }
+
+  .solid-input {
+    margin-top: auto;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 26px;
+
+    .ghost {
+      margin-right: 16px;
+    }
+  }
+}
 </style> 
