@@ -15,8 +15,10 @@
       </div>
     </div>
 
-    <v-btn @click="startRecording()" :disabled="recording || processing">Start</v-btn>
-    <v-btn @click="stopRecording()" :disabled="!recording || processing">Stop</v-btn>
+    <div class="buttons">
+      <v-btn @click="startRecording()" :disabled="recording || processing">Start</v-btn>
+      <v-btn @click="stopRecording()" :disabled="!recording || processing">Stop</v-btn>
+    </div>
   </section>
 </template>
 
@@ -25,10 +27,12 @@
 import textToSpeech from "@/modules/textToSpeech";
 
 import MessageBubble from "../components/MessageBubble";
+import SolidButton from "../components/SolidButton";
 
 export default {
   components: {
-    MessageBubble
+    MessageBubble,
+    SolidButton
   },
   created() {
     try {
@@ -49,16 +53,19 @@ export default {
     }
 
     const that = this;
-    navigator.getUserMedia({
-      audio: true
-    }, function(stream) {
-      that.startUserMedia(stream)
-    }, function(e) {
-      console.log('No live audio input: ' + e);
-    });
+    navigator.getUserMedia(
+      {
+        audio: true
+      },
+      function(stream) {
+        that.startUserMedia(stream);
+      },
+      function(e) {
+        console.log("No live audio input: " + e);
+      }
+    );
 
     this.respond("Hey, Whats up, want to write your daily diary now?");
-    
   },
 
   destroyed() {
@@ -72,7 +79,7 @@ export default {
       recorder: null,
       recording: false,
       processing: false,
-      language: 'en-US',
+      language: "en-US",
       // language: 'pl-PL',
       data: {
         audio: {
@@ -149,37 +156,41 @@ export default {
         });
     },
     onAction(text) {
-      switch(this.step) {
+      switch (this.step) {
         case 0:
-          this.respond('Hey, Whats up, want to write your daily diary now?');
+          this.respond("Hey, Whats up, want to write your daily diary now?");
           this.step = 1;
-        break;
+          break;
         case 1:
-          if(text.includes('yes')) {
-            this.respond('So, how do you feel after your day?');
+          if (text.includes("yes")) {
+            this.respond("So, how do you feel after your day?");
             this.step = 2;
           } else {
-             this.respond('Ok!');
+            this.respond("Ok!");
             this.step = 0;
           }
-        break;
+          break;
         case 2:
-          this.respond('What was your biggest accomplishment today?');
+          this.respond("What was your biggest accomplishment today?");
           this.step = 3;
-        break;
+          break;
         case 3:
-          this.respond('What was the most challenging task for you?');
+          this.respond("What was the most challenging task for you?");
           this.step = 4;
-        break;
+          break;
         case 4:
-          this.respond(`Would you say, you had a good day, ${this.$store.getters.userInfo.name.split(' ')[0]}?`);
+          this.respond(
+            `Would you say, you had a good day, ${
+              this.$store.getters.userInfo.name.split(" ")[0]
+            }?`
+          );
           this.step = 5;
-        break;
+          break;
       }
     },
-    respond (text) {
-      if(this.language == 'pl-PL') {
-        responsiveVoice.speak(text, 'Polish Female'); 
+    respond(text) {
+      if (this.language == "pl-PL") {
+        responsiveVoice.speak(text, "Polish Female");
         this.saveBotResponse(text);
       } else {
         textToSpeech
@@ -213,5 +224,20 @@ export default {
 
 
 <style lang="scss" scoped>
+.bot {
+  padding-top: 34px;
 
+  .message-bubble {
+    margin-bottom: 16px;
+  }
+
+  .buttons {
+    width: 100%;
+    display: flex;
+    position: fixed;
+    bottom: 32px;
+    left: 0;
+    padding: 0 14px;
+  }
+}
 </style>
