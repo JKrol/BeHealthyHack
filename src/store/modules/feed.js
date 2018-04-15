@@ -123,7 +123,9 @@ export default {
     
                                 promises.push(new Promise(resolve => {
                                     dispatch('fetchPhoto', element.id).then(photo => {
-                                        element.url = photo.images[5].source;
+                                        photo.images.sort((a, b) => b.width - a.width);
+                                        var img = photo.images.find(img => img.width < 600);
+                                        element.url = img ? img.source : photo.images[0].source;
                                         resolve();
                                     });
                                 }));

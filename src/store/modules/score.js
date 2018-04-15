@@ -68,6 +68,7 @@ export default {
                     return;
                 } 
                 indico.getSentimentFromText(msg.message).then(result => {
+                    commit(SET_MSG_SCORE, { id: msg.id, score: result });
                     resolve(mapScore(result));
                 }).catch(err => reject(err));
             });
@@ -79,6 +80,7 @@ export default {
                     return;
                 } 
                 indico.getSentimentFromImg(photo.url).then(result => {
+                    commit(SET_IMG_SCORE, { id: photo.id, score: result });
                     resolve(mapScore(result));
                 }).catch(err => reject(err));
             });
