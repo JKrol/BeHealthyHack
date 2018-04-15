@@ -4,13 +4,13 @@
     BOT
     <ul>
       <li v-for="item in history" :key="item.id">
-        {{ item.type }}
+        {{ item.type }}:
         {{ item.text }}
       </li>
     </ul>
 
-    <v-btn @click="startRecording()">Start</v-btn>
-    <v-btn @click="stopRecording()">Stop</v-btn>
+    <v-btn @click="startRecording()" :disabled="recording || processing">Start</v-btn>
+    <v-btn @click="stopRecording()" :disabled="!recording || processing">Stop</v-btn>
   </div>
 </template>
 
@@ -50,6 +50,8 @@ export default {
     return {
       audioContext: null,
       recorder: null,
+      recording: false,
+      processing: false,
       data: {
         "audio": {
           "content": null
@@ -69,9 +71,13 @@ export default {
       this.recorder = new Recorder(input);
     },
     startRecording() {
+      this.recording = true;
+      this.processing = false;
       this.recorder && this.recorder.record();
     },
     stopRecording() {
+      this.recording = false;
+      this.processing = true;
       this.recorder && this.recorder.stop();
       // create WAV download link using audio data blob
       this.processRecording();
@@ -98,7 +104,10 @@ export default {
                     text: result.transcript
                   });
                 }
+
+                that.processing = false;
             }).catch(error => {
+              this.processing = false;
               console.log("ERROR:" + error);
             })
         }
