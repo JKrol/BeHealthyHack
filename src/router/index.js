@@ -15,6 +15,7 @@ import store from '@/store'
 import Login from '@/pages/Login'
 import SelectFriends from '@/pages/SelectFriends'
 import Main from '@/pages/Main'
+import Bot from '@/pages/Bot'
 
 const router = new Router({
   mode: 'history',
@@ -35,9 +36,14 @@ const router = new Router({
       component: Main
     },
     {
-      path: '/:id',
+      path: '/friend/:id',
       name: 'main_selected',
       component: Main
+    },
+    {
+      path: '/bot',
+      name: 'bot',
+      component: Bot
     },
     {
       path: '/IndicoTest',

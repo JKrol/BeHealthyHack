@@ -7,6 +7,7 @@
       </li>
     </ul>
     <br/>
+    <v-btn @click="goToBot()">TEST BOT</v-btn>
     <br/>
     <div v-if="selectedFriend">
       <friend-card :friend="selectedFriend" />
@@ -28,6 +29,9 @@ export default {
   methods: {
     selectFriend(friendId) {
       this.$router.push({ name: 'main_selected', params: { id: friendId }})
+    },
+    goToBot() {
+      this.$router.push({ name: 'bot' })
     }
   },
   data() {
