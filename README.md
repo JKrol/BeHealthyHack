@@ -2,6 +2,9 @@
 
 > BeHealthy Hackathon
 
+
+[https://fringers.pl/blog/20180415_be-healthy-hackathon](https://fringers.pl/blog/20180415_be-healthy-hackathon)
+
 ## Build Setup
 
 ``` bash
